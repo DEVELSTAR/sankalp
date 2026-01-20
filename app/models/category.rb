@@ -1,4 +1,5 @@
 class Category < ApplicationRecord
+  self.table_name = "sankalp_categories"
   # Associations
   has_many :sankalps, class_name: "SankalpRecord", dependent: :restrict_with_error
 

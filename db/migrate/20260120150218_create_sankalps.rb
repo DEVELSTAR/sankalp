@@ -6,8 +6,8 @@ class CreateSankalps < ActiveRecord::Migration[8.1]
       t.integer :status, null: false, default: 0
       t.date :start_date, null: false
       t.date :end_date
-      t.references :user, null: false, foreign_key: true
-      t.references :category, null: false, foreign_key: true
+      t.references :user, null: false, foreign_key: { to_table: :sankalp_users }
+      t.references :category, null: false, foreign_key: { to_table: :sankalp_categories }
       t.datetime :deleted_at
 
       t.timestamps

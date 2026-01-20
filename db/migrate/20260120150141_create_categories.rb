@@ -1,6 +1,6 @@
 class CreateCategories < ActiveRecord::Migration[8.1]
   def change
-    create_table :categories do |t|
+    create_table :sankalp_categories do |t|
       t.string :name, null: false
       t.text :description
       t.string :color, default: "#6366f1"
@@ -8,6 +8,6 @@ class CreateCategories < ActiveRecord::Migration[8.1]
 
       t.timestamps
     end
-    add_index :categories, :name, unique: true
+    add_index :sankalp_categories, :name, unique: true
   end
 end
