@@ -1,0 +1,14 @@
+import { Controller } from "@hotwired/stimulus"
+
+export default class extends Controller {
+    dismiss() {
+        this.element.remove()
+    }
+
+    connect() {
+        // Auto-dismiss after 5 seconds
+        setTimeout(() => {
+            this.dismiss()
+        }, 5000)
+    }
+}

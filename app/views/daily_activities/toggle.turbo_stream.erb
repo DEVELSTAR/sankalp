@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "activity_#{@daily_activity.id}" do %>
+  <%= render "activity_row", activity: @daily_activity, sankalp: @sankalp %>
+<% end %>

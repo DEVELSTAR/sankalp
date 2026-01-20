@@ -1,0 +1,81 @@
+<% content_for :title, "My Profile - Sankalp" %>
+
+<div class="max-w-3xl mx-auto space-y-6">
+  <div class="bg-white shadow-sm ring-1 ring-gray-900/5 rounded-xl overflow-hidden">
+    <!-- Profile Header -->
+    <div class="relative h-32 bg-gradient-to-r from-indigo-500 to-purple-600">
+      <div class="absolute -bottom-12 left-6">
+        <div class="h-24 w-24 rounded-full bg-white p-1 shadow-lg">
+          <div class="h-full w-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-white text-3xl font-bold">
+            <%= @user.first_name[0].upcase %><%= @user.last_name[0].upcase %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-16 px-6 pb-6">
+      <div class="flex items-start justify-between">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900"><%= @user.full_name %></h1>
+          <p class="text-sm text-gray-500"><%= @user.email %></p>
+          <div class="mt-2">
+            <%= role_badge(@user.role) %>
+          </div>
+        </div>
+        <%= link_to edit_profile_path, class: "inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" do %>
+          <svg class="-ml-0.5 mr-1.5 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+          </svg>
+          Edit Profile
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 text-center">
+      <p class="text-3xl font-bold text-indigo-600"><%= @sankalps_count %></p>
+      <p class="text-sm text-gray-500">Total Sankalps</p>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 text-center">
+      <p class="text-3xl font-bold text-green-600"><%= @completed_sankalps_count %></p>
+      <p class="text-sm text-gray-500">Completed</p>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 text-center">
+      <p class="text-3xl font-bold text-purple-600"><%= @total_activities %></p>
+      <p class="text-sm text-gray-500">Total Activities</p>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 text-center">
+      <p class="text-3xl font-bold text-orange-500">
+        <%= @total_activities > 0 ? ((@completed_activities.to_f / @total_activities) * 100).round(0) : 0 %>%
+      </p>
+      <p class="text-sm text-gray-500">Success Rate</p>
+    </div>
+  </div>
+
+  <!-- Account Details -->
+  <div class="bg-white shadow-sm ring-1 ring-gray-900/5 rounded-xl overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-100">
+      <h2 class="text-lg font-semibold text-gray-900">Account Details</h2>
+    </div>
+    <dl class="divide-y divide-gray-100">
+      <div class="px-6 py-4 sm:grid sm:grid-cols-3 sm:gap-4">
+        <dt class="text-sm font-medium text-gray-500">First name</dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0"><%= @user.first_name %></dd>
+      </div>
+      <div class="px-6 py-4 sm:grid sm:grid-cols-3 sm:gap-4">
+        <dt class="text-sm font-medium text-gray-500">Last name</dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0"><%= @user.last_name %></dd>
+      </div>
+      <div class="px-6 py-4 sm:grid sm:grid-cols-3 sm:gap-4">
+        <dt class="text-sm font-medium text-gray-500">Email address</dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0"><%= @user.email %></dd>
+      </div>
+      <div class="px-6 py-4 sm:grid sm:grid-cols-3 sm:gap-4">
+        <dt class="text-sm font-medium text-gray-500">Member since</dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0"><%= @user.created_at.strftime("%B %d, %Y") %></dd>
+      </div>
+    </dl>
+  </div>
+</div>

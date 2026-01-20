@@ -1,0 +1,67 @@
+<% content_for :title, "My Sankalps - Sankalp" %>
+
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="md:flex md:items-center md:justify-between">
+    <div class="min-w-0 flex-1">
+      <h1 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+        My Sankalps
+      </h1>
+      <p class="mt-1 text-sm text-gray-500">
+        Track and manage your commitments
+      </p>
+    </div>
+    <div class="mt-4 flex md:ml-4 md:mt-0">
+      <%= link_to new_sankalp_path, class: "inline-flex items-center rounded-md bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:from-indigo-500 hover:to-purple-500 transition-all duration-200" do %>
+        <svg class="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+        </svg>
+        New Sankalp
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+    <%= form_with url: sankalps_path, method: :get, class: "flex flex-wrap gap-4 items-end", data: { turbo_frame: "_top" } do |f| %>
+      <div class="flex-1 min-w-[150px]">
+        <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+        <%= select_tag :status, options_for_select([["All Statuses", ""], ["Active", "active"], ["Completed", "completed"], ["Paused", "paused"]], params[:status]), class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+      </div>
+      <div class="flex-1 min-w-[150px]">
+        <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+        <%= select_tag :category_id, options_from_collection_for_select(@categories, :id, :name, params[:category_id]), include_blank: "All Categories", class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+      </div>
+      <div class="flex gap-2">
+        <%= submit_tag "Filter", class: "inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 cursor-pointer" %>
+        <%= link_to "Clear", sankalps_path, class: "inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Sankalps Grid -->
+  <% if @sankalps.any? %>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <% @sankalps.each do |sankalp| %>
+        <%= render "sankalp_card", sankalp: sankalp %>
+      <% end %>
+    </div>
+    <%= render "shared/pagination" %>
+  <% else %>
+    <div class="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
+      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <h3 class="mt-2 text-sm font-semibold text-gray-900">No Sankalps found</h3>
+      <p class="mt-1 text-sm text-gray-500">Get started by creating a new Sankalp.</p>
+      <div class="mt-6">
+        <%= link_to new_sankalp_path, class: "inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" do %>
+          <svg class="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+          </svg>
+          Create Sankalp
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

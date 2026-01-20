@@ -1,0 +1,55 @@
+<nav class="flex flex-1 flex-col py-4">
+  <ul role="list" class="flex flex-1 flex-col gap-y-7">
+    <li>
+      <ul role="list" class="-mx-2 space-y-1">
+        <li>
+          <%= link_to root_path, class: "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold #{current_page?(root_path) ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'}" do %>
+            <svg class="h-6 w-6 shrink-0 <%= current_page?(root_path) ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600' %>" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+            </svg>
+            Dashboard
+          <% end %>
+        </li>
+        <li>
+          <%= link_to sankalps_path, class: "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold #{current_page?(sankalps_path) || controller_name == 'sankalps' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'}" do %>
+            <svg class="h-6 w-6 shrink-0 <%= current_page?(sankalps_path) || controller_name == 'sankalps' ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600' %>" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            My Sankalps
+          <% end %>
+        </li>
+        <li>
+          <%= link_to categories_path, class: "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold #{controller_name == 'categories' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'}" do %>
+            <svg class="h-6 w-6 shrink-0 <%= controller_name == 'categories' ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600' %>" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+            </svg>
+            Categories
+          <% end %>
+        </li>
+      </ul>
+    </li>
+    
+    <li class="mt-auto">
+      <ul role="list" class="-mx-2 space-y-1">
+        <li>
+          <%= link_to profile_path, class: "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold #{controller_name == 'profiles' ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50'}" do %>
+            <svg class="h-6 w-6 shrink-0 <%= controller_name == 'profiles' ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600' %>" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+            </svg>
+            Profile
+          <% end %>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+<!-- Quick action button -->
+<div class="pb-4">
+  <%= link_to new_sankalp_path, class: "flex items-center justify-center gap-x-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:from-indigo-500 hover:to-purple-500 transition-all duration-200" do %>
+    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+    </svg>
+    New Sankalp
+  <% end %>
+</div>

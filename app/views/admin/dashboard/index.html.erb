@@ -1,0 +1,128 @@
+<% content_for :title, "Admin Dashboard - Sankalp" %>
+
+<div class="space-y-6">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+    <p class="mt-1 text-sm text-gray-500">Overview of all Sankalp activities</p>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+      <dt class="truncate text-sm font-medium text-gray-500">Total Users</dt>
+      <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%= @total_users %></dd>
+    </div>
+    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+      <dt class="truncate text-sm font-medium text-gray-500">Total Sankalps</dt>
+      <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%= @total_sankalps %></dd>
+    </div>
+    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+      <dt class="truncate text-sm font-medium text-gray-500">Total Activities</dt>
+      <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%= @total_activities %></dd>
+    </div>
+    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+      <dt class="truncate text-sm font-medium text-gray-500">Completion Rate</dt>
+      <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+        <%= @total_activities > 0 ? ((@completed_activities.to_f / @total_activities) * 100).round(1) : 0 %>%
+      </dd>
+    </div>
+  </div>
+
+  <!-- Sankalps by Status -->
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <div class="overflow-hidden rounded-lg bg-white shadow">
+      <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+        <h3 class="text-base font-semibold leading-6 text-gray-900">Sankalps by Status</h3>
+      </div>
+      <div class="px-4 py-5 sm:p-6">
+        <dl class="grid grid-cols-3 gap-4">
+          <div class="overflow-hidden rounded-lg bg-green-50 px-4 py-5 text-center">
+            <dt class="truncate text-sm font-medium text-green-600">Active</dt>
+            <dd class="mt-1 text-3xl font-semibold tracking-tight text-green-900"><%= @active_sankalps %></dd>
+          </div>
+          <div class="overflow-hidden rounded-lg bg-blue-50 px-4 py-5 text-center">
+            <dt class="truncate text-sm font-medium text-blue-600">Completed</dt>
+            <dd class="mt-1 text-3xl font-semibold tracking-tight text-blue-900"><%= @completed_sankalps %></dd>
+          </div>
+          <div class="overflow-hidden rounded-lg bg-yellow-50 px-4 py-5 text-center">
+            <dt class="truncate text-sm font-medium text-yellow-600">Paused</dt>
+            <dd class="mt-1 text-3xl font-semibold tracking-tight text-yellow-900"><%= @paused_sankalps %></dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Category Stats -->
+    <div class="overflow-hidden rounded-lg bg-white shadow">
+      <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+        <h3 class="text-base font-semibold leading-6 text-gray-900">Sankalps by Category</h3>
+      </div>
+      <div class="divide-y divide-gray-200">
+        <% @category_stats.each do |category| %>
+          <div class="px-4 py-4 sm:px-6 flex items-center justify-between">
+            <div class="flex items-center">
+              <span class="inline-block w-3 h-3 rounded-full mr-3" style="background-color: <%= category.color %>"></span>
+              <span class="text-sm font-medium text-gray-900"><%= category.name %></span>
+            </div>
+            <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
+              <%= category.sankalps_count %> Sankalps
+            </span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Users & Sankalps -->
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <!-- Recent Users -->
+    <div class="overflow-hidden rounded-lg bg-white shadow">
+      <div class="px-4 py-5 sm:px-6 border-b border-gray-200 flex items-center justify-between">
+        <h3 class="text-base font-semibold leading-6 text-gray-900">Recent Users</h3>
+        <%= link_to "View all", admin_users_path, class: "text-sm font-medium text-indigo-600 hover:text-indigo-500" %>
+      </div>
+      <div class="divide-y divide-gray-200">
+        <% @recent_users.each do |user| %>
+          <%= link_to admin_user_path(user), class: "block px-4 py-4 sm:px-6 hover:bg-gray-50" do %>
+            <div class="flex items-center">
+              <div class="h-10 w-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm">
+                <%= user.first_name[0].upcase %><%= user.last_name[0].upcase %>
+              </div>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-gray-900"><%= user.full_name %></p>
+                <p class="text-xs text-gray-500"><%= user.email %></p>
+              </div>
+              <div class="ml-auto">
+                <%= role_badge(user.role) %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Recent Sankalps -->
+    <div class="overflow-hidden rounded-lg bg-white shadow">
+      <div class="px-4 py-5 sm:px-6 border-b border-gray-200 flex items-center justify-between">
+        <h3 class="text-base font-semibold leading-6 text-gray-900">Recent Sankalps</h3>
+        <%= link_to "View all", admin_sankalps_path, class: "text-sm font-medium text-indigo-600 hover:text-indigo-500" %>
+      </div>
+      <div class="divide-y divide-gray-200">
+        <% @recent_sankalps.each do |sankalp| %>
+          <%= link_to admin_sankalp_path(sankalp), class: "block px-4 py-4 sm:px-6 hover:bg-gray-50" do %>
+            <div class="flex items-center justify-between">
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center">
+                  <span class="inline-block w-3 h-3 rounded-full mr-2" style="background-color: <%= sankalp.category.color %>"></span>
+                  <p class="text-sm font-medium text-gray-900 truncate"><%= sankalp.title %></p>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">by <%= sankalp.user.full_name %></p>
+              </div>
+              <%= status_badge(sankalp.status) %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

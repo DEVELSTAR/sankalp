@@ -1,0 +1,31 @@
+<!-- Mobile sidebar overlay -->
+<div id="mobile-sidebar-overlay" class="hidden fixed inset-0 z-40 bg-gray-600 bg-opacity-75 lg:hidden"></div>
+
+<!-- Mobile sidebar -->
+<aside id="mobile-sidebar" class="hidden fixed inset-y-0 left-0 z-50 w-64 bg-white transform -translate-x-full transition-transform duration-300 ease-in-out lg:hidden">
+  <div class="flex h-16 shrink-0 items-center justify-between px-6 border-b border-gray-200">
+    <%= link_to root_path, class: "flex items-center" do %>
+      <span class="text-2xl">🎯</span>
+      <span class="ml-2 text-xl font-bold text-indigo-600" style="color: #4f46e5;">Sankalp</span>
+    <% end %>
+    <button id="close-sidebar" class="text-gray-400 hover:text-gray-500">
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+  <%= render "shared/sidebar_content" %>
+</aside>
+
+<!-- Desktop sidebar -->
+<aside class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-64 lg:flex-col" style="z-index: 50;">
+  <div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
+    <div class="flex h-16 shrink-0 items-center">
+      <%= link_to root_path, class: "flex items-center" do %>
+        <span class="text-2xl">🎯</span>
+        <span class="ml-2 text-xl font-bold text-indigo-600" style="color: #4f46e5;">Sankalp</span>
+      <% end %>
+    </div>
+    <%= render "shared/sidebar_content" %>
+  </div>
+</aside>

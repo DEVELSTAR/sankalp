@@ -1,0 +1,55 @@
+<%= form_with model: [sankalp, daily_activity], class: "space-y-6" do |f| %>
+  <% if daily_activity.errors.any? %>
+    <div class="rounded-md bg-red-50 p-4">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800">There were <%= pluralize(daily_activity.errors.count, "error") %> with your submission:</h3>
+          <div class="mt-2 text-sm text-red-700">
+            <ul role="list" class="list-disc space-y-1 pl-5">
+              <% daily_activity.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="bg-white shadow-sm ring-1 ring-gray-900/5 rounded-xl">
+    <div class="px-4 py-6 sm:p-8">
+      <div class="grid grid-cols-1 gap-x-6 gap-y-8">
+        <!-- Activity Date -->
+        <div>
+          <%= f.label :activity_date, class: "block text-sm font-medium leading-6 text-gray-900" %>
+          <%= f.date_field :activity_date, value: daily_activity.activity_date || params[:activity_date] || Date.current, class: "mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+        </div>
+
+        <!-- Completed -->
+        <div class="flex items-center gap-x-3">
+          <%= f.check_box :completed, class: "h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" %>
+          <%= f.label :completed, class: "block text-sm font-medium leading-6 text-gray-900" do %>
+            Mark as completed
+          <% end %>
+        </div>
+
+        <!-- Notes -->
+        <div>
+          <%= f.label :notes, class: "block text-sm font-medium leading-6 text-gray-900" %>
+          <%= f.text_area :notes, rows: 4, class: "mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "What did you accomplish today? Any reflections?" %>
+          <p class="mt-2 text-sm text-gray-500">Optional notes about your progress.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-end gap-x-4 border-t border-gray-900/10 px-4 py-4 sm:px-8">
+      <%= link_to "Cancel", sankalp, class: "text-sm font-semibold leading-6 text-gray-900 hover:text-gray-700" %>
+      <%= f.submit daily_activity.persisted? ? "Update Activity" : "Log Activity", class: "rounded-md bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:from-indigo-500 hover:to-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer" %>
+    </div>
+  </div>
+<% end %>

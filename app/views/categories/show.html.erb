@@ -1,0 +1,43 @@
+<% content_for :title, "#{@category.name} - Sankalp" %>
+
+<div class="space-y-6">
+  <div class="md:flex md:items-center md:justify-between">
+    <div class="flex items-center">
+      <span class="inline-block w-6 h-6 rounded-full mr-3" style="background-color: <%= @category.color %>"></span>
+      <div>
+        <h1 class="text-2xl font-bold leading-7 text-gray-900"><%= @category.name %></h1>
+        <% if @category.description.present? %>
+          <p class="mt-1 text-sm text-gray-500"><%= @category.description %></p>
+        <% end %>
+      </div>
+    </div>
+    <%= link_to new_sankalp_path(category_id: @category.id), class: "mt-4 md:mt-0 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" do %>
+      <svg class="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+      </svg>
+      New Sankalp
+    <% end %>
+  </div>
+
+  <% if @sankalps.any? %>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <% @sankalps.each do |sankalp| %>
+        <%= render "sankalps/sankalp_card", sankalp: sankalp %>
+      <% end %>
+    </div>
+    <%= render "shared/pagination" %>
+  <% else %>
+    <div class="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
+      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <h3 class="mt-2 text-sm font-semibold text-gray-900">No Sankalps in this category</h3>
+      <p class="mt-1 text-sm text-gray-500">Create your first Sankalp in <%= @category.name %>.</p>
+      <div class="mt-6">
+        <%= link_to new_sankalp_path(category_id: @category.id), class: "inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" do %>
+          Create Sankalp
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
