@@ -8,6 +8,8 @@ class User < ApplicationRecord
   # Associations
   has_many :sankalps, class_name: "SankalpRecord", dependent: :destroy
   has_many :daily_activities, through: :sankalps
+  has_many :categories, dependent: :destroy
+  has_many :rewards, dependent: :destroy
 
   # Enums
   enum :role, { user: 0, admin: 1 }

@@ -1,0 +1,95 @@
+<% content_for :title, "Activity Details - Sankalp" %>
+
+<div class="space-y-6">
+  <!-- Breadcrumb -->
+  <nav class="flex" aria-label="Breadcrumb">
+    <ol role="list" class="flex items-center space-x-4">
+      <li>
+        <div>
+          <%= link_to sankalps_path, class: "text-gray-400 hover:text-gray-500" do %>
+            <svg class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd" />
+            </svg>
+            <span class="sr-only">Sankalps</span>
+          <% end %>
+        </div>
+      </li>
+      <li>
+        <div class="flex items-center">
+          <svg class="h-5 w-5 flex-shrink-0 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
+          </svg>
+          <%= link_to @sankalp.title, sankalp_path(@sankalp), class: "ml-4 text-sm font-medium text-gray-500 hover:text-gray-700" %>
+        </div>
+      </li>
+       <li>
+        <div class="flex items-center">
+          <svg class="h-5 w-5 flex-shrink-0 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
+          </svg>
+          <span class="ml-4 text-sm font-medium text-gray-500">Activity Details</span>
+        </div>
+      </li>
+    </ol>
+  </nav>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-gray-900">Activity Details</h1>
+      <%= link_to edit_sankalp_daily_activity_path(@sankalp, @daily_activity), class: "inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" do %>
+         <svg class="-ml-0.5 mr-1.5 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+           <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+         </svg>
+         Edit Activity
+      <% end %>
+    </div>
+    
+    <div class="px-6 py-5 space-y-6">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Activity Date -->
+        <div>
+          <h3 class="text-sm font-medium text-gray-500">Activity Date</h3>
+          <p class="mt-1 text-lg text-gray-900"><%= @daily_activity.activity_date.strftime("%B %d, %Y") %></p>
+        </div>
+
+        <!-- Status -->
+        <div>
+          <h3 class="text-sm font-medium text-gray-500">Status</h3>
+          <div class="mt-1">
+               <% if @daily_activity.completed %>
+                  <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-sm font-medium text-green-800">
+                    <svg class="-ml-0.5 mr-1.5 h-4 w-4 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                    Completed
+                  </span>
+               <% else %>
+                  <span class="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-sm font-medium text-yellow-800">
+                    <svg class="-ml-0.5 mr-1.5 h-4 w-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Pending
+                  </span>
+               <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div>
+        <h3 class="text-sm font-medium text-gray-500">Notes</h3>
+        <div class="mt-1 bg-gray-50 rounded-lg p-4 text-gray-900 text-sm whitespace-pre-wrap border border-gray-100">
+          <%= @daily_activity.notes.present? ? @daily_activity.notes : "No notes logged." %>
+        </div>
+      </div>
+
+      <!-- Metadata -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-100 text-xs text-gray-400">
+        <div>
+           <span class="font-medium">Created:</span> <%= @daily_activity.created_at.strftime("%B %d, %Y %I:%M %p") %>
+        </div>
+        <div>
+           <span class="font-medium">Last Updated:</span> <%= @daily_activity.updated_at.strftime("%B %d, %Y %I:%M %p") %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

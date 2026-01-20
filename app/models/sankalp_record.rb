@@ -14,6 +14,9 @@ class SankalpRecord < ApplicationRecord
   belongs_to :user
   belongs_to :category
   has_many :daily_activities, foreign_key: :sankalp_id, dependent: :destroy
+  has_many :rewards, foreign_key: :sankalp_id, dependent: :nullify
+
+  after_update :check_for_completion_reward
 
   # Enums
   enum :status, { active: 0, completed: 1, paused: 2 }
@@ -73,6 +76,20 @@ class SankalpRecord < ApplicationRecord
   end
 
   private
+
+  def check_for_completion_reward
+    if saved_change_to_status? && completed?
+      unless user.rewards.where(sankalp_id: id, title: "Sankalp Champion").exists?
+        Reward.create(
+          user: user,
+          sankalp: self,
+          title: "Sankalp Champion",
+          message: "Congratulations! You have completed your Sankalp - #{title}. Keep up the great work!",
+          icon: "trophy"
+        )
+      end
+    end
+  end
 
   def end_date_after_start_date
     if end_date < start_date

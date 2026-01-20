@@ -24,38 +24,38 @@
   <!-- Stats cards -->
   <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
     <!-- Total Sankalps -->
-    <div class="relative overflow-hidden rounded-xl bg-white px-4 py-5 shadow-sm border border-gray-100 sm:p-6">
-      <div class="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-indigo-50"></div>
+    <%= link_to sankalps_path, class: "block relative overflow-hidden rounded-xl bg-white px-4 py-5 shadow-sm border border-gray-100 sm:p-6 hover:shadow-md transition-shadow group" do %>
+      <div class="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-indigo-50 group-hover:bg-indigo-100 transition-colors"></div>
       <dt class="truncate text-sm font-medium text-gray-500">Total Sankalps</dt>
       <dd class="mt-1 text-3xl font-bold tracking-tight text-gray-900"><%= @total_sankalps %></dd>
       <div class="mt-2">
         <span class="text-sm text-gray-500"><%= @completed_sankalps %> completed</span>
       </div>
-    </div>
+    <% end %>
 
     <!-- Active Sankalps -->
-    <div class="relative overflow-hidden rounded-xl bg-white px-4 py-5 shadow-sm border border-gray-100 sm:p-6">
-      <div class="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-green-50"></div>
+    <%= link_to sankalps_path(status: 'active'), class: "block relative overflow-hidden rounded-xl bg-white px-4 py-5 shadow-sm border border-gray-100 sm:p-6 hover:shadow-md transition-shadow group" do %>
+      <div class="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-green-50 group-hover:bg-green-100 transition-colors"></div>
       <dt class="truncate text-sm font-medium text-gray-500">Active Sankalps</dt>
       <dd class="mt-1 text-3xl font-bold tracking-tight text-gray-900"><%= @active_sankalps.count %></dd>
       <div class="mt-2">
         <span class="text-sm text-green-600">In progress</span>
       </div>
-    </div>
+    <% end %>
 
     <!-- Today's Activities -->
-    <div class="relative overflow-hidden rounded-xl bg-white px-4 py-5 shadow-sm border border-gray-100 sm:p-6">
-      <div class="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-yellow-50"></div>
+    <%= link_to root_path(anchor: "today-pending"), class: "block relative overflow-hidden rounded-xl bg-white px-4 py-5 shadow-sm border border-gray-100 sm:p-6 hover:shadow-md transition-shadow group" do %>
+      <div class="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-yellow-50 group-hover:bg-yellow-100 transition-colors"></div>
       <dt class="truncate text-sm font-medium text-gray-500">Pending Today</dt>
       <dd class="mt-1 text-3xl font-bold tracking-tight text-gray-900"><%= @today_pending.count %></dd>
       <div class="mt-2">
         <span class="text-sm text-yellow-600">Activities to complete</span>
       </div>
-    </div>
+    <% end %>
 
     <!-- Completion Rate -->
-    <div class="relative overflow-hidden rounded-xl bg-white px-4 py-5 shadow-sm border border-gray-100 sm:p-6">
-      <div class="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-purple-50"></div>
+    <%= link_to profile_path, class: "block relative overflow-hidden rounded-xl bg-white px-4 py-5 shadow-sm border border-gray-100 sm:p-6 hover:shadow-md transition-shadow group" do %>
+      <div class="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-purple-50 group-hover:bg-purple-100 transition-colors"></div>
       <dt class="truncate text-sm font-medium text-gray-500">Completion Rate</dt>
       <dd class="mt-1 text-3xl font-bold tracking-tight text-gray-900">
         <%= @total_activities > 0 ? ((@completed_activities.to_f / @total_activities) * 100).round(1) : 0 %>%
@@ -63,12 +63,12 @@
       <div class="mt-2">
         <span class="text-sm text-purple-600"><%= @completed_activities %>/<%= @total_activities %> activities</span>
       </div>
-    </div>
+    <% end %>
   </div>
 
   <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
     <!-- Today's Pending Activities -->
-    <div class="rounded-xl bg-white shadow-sm border border-gray-100 overflow-hidden">
+    <div id="today-pending" class="rounded-xl bg-white shadow-sm border border-gray-100 overflow-hidden">
       <div class="px-4 py-5 sm:px-6 border-b border-gray-100">
         <h3 class="text-base font-semibold leading-6 text-gray-900 flex items-center">
           <svg class="h-5 w-5 text-yellow-500 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

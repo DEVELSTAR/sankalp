@@ -1,9 +1,8 @@
 class CategoriesController < ApplicationController
   before_action :set_category, only: [ :show, :edit, :update, :destroy ]
-  before_action :require_admin!, except: [ :index, :show ]
 
   def index
-    @categories = Category.with_sankalp_count.ordered
+    @categories = Category.accessible_by_user(current_user).with_sankalp_count.ordered
   end
 
   def show
@@ -13,11 +12,11 @@ class CategoriesController < ApplicationController
   end
 
   def new
-    @category = Category.new
+    @category = current_user.categories.build
   end
 
   def create
-    @category = Category.new(category_params)
+    @category = current_user.categories.build(category_params)
     authorize @category
 
     if @category.save
@@ -54,7 +53,7 @@ class CategoriesController < ApplicationController
   private
 
   def set_category
-    @category = Category.find(params[:id])
+    @category = Category.accessible_by_user(current_user).find(params[:id])
   end
 
   def category_params

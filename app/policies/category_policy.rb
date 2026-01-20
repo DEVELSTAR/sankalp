@@ -8,15 +8,15 @@ class CategoryPolicy < ApplicationPolicy
   end
 
   def create?
-    admin?
+    true
   end
 
   def update?
-    admin?
+    admin? || record.user_id == user.id
   end
 
   def destroy?
-    admin?
+    admin? || record.user_id == user.id
   end
 
   class Scope < ApplicationPolicy::Scope

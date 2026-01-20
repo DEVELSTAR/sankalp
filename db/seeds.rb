@@ -7,8 +7,9 @@ puts "🌱 Seeding database..."
 # Clear existing data in development/test
 if Rails.env.development? || Rails.env.test?
   puts "Clearing existing data..."
+  Reward.delete_all
   DailyActivity.delete_all
-  SankalpRecord.with_deleted.delete_all
+  SankalpRecord.delete_all
   User.delete_all
   Category.delete_all
 end
@@ -56,8 +57,8 @@ puts "Creating demo user..."
 demo_user = User.find_or_create_by!(email: "demo@sankalp.app") do |user|
   user.password = "password123"
   user.password_confirmation = "password123"
-  user.first_name = "Demo"
-  user.last_name = "User"
+  user.first_name = "Akib"
+  user.last_name = "Ahmed"
   user.role = :user
 end
 
@@ -223,6 +224,30 @@ if Rails.env.development?
   end
 
   puts "✅ Created 5 additional users with Sankalps"
+
+  # Create sample rewards for demo user
+  puts "Creating sample rewards..."
+
+  # Reward for completed sankalp
+  completed_sankalp = demo_user.sankalps.find_by(status: :completed)
+  if completed_sankalp
+    Reward.find_or_create_by!(user: demo_user, sankalp: completed_sankalp, title: "Sankalp Champion") do |r|
+      r.message = "Congratulations! You have completed your Sankalp - #{completed_sankalp.title}. Keep up the great work!"
+      r.icon = "trophy"
+      r.created_at = 2.days.ago
+      r.read_at = 1.day.ago
+    end
+  end
+
+  # Unread reward
+  Reward.create!(
+    user: demo_user,
+    title: "Consistency Star",
+    message: "You have logged activity for 7 consecutive days! Amazing discipline.",
+    icon: "star",
+    created_at: 2.hours.ago
+  )
+  puts "✅ Created rewards for demo user"
 end
 
 puts ""

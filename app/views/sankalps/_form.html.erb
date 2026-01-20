@@ -27,38 +27,38 @@
         <!-- Title -->
         <div class="col-span-full">
           <%= f.label :title, class: "block text-sm font-medium leading-6 text-gray-900" %>
-          <%= f.text_field :title, class: "mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "e.g., Read 30 minutes daily" %>
+          <%= f.text_field :title, class: "mt-2 block w-full rounded-md border-0 py-1.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "e.g., Read 30 minutes daily" %>
         </div>
 
         <!-- Description -->
         <div class="col-span-full">
           <%= f.label :description, class: "block text-sm font-medium leading-6 text-gray-900" %>
-          <%= f.text_area :description, rows: 3, class: "mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "Describe your commitment..." %>
+          <%= f.text_area :description, rows: 3, class: "mt-2 block w-full rounded-md border-0 py-1.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "Describe your commitment..." %>
           <p class="mt-2 text-sm text-gray-500">Write a brief description of your Sankalp.</p>
         </div>
 
         <!-- Category -->
         <div class="sm:col-span-3">
           <%= f.label :category_id, "Category", class: "block text-sm font-medium leading-6 text-gray-900" %>
-          <%= f.collection_select :category_id, @categories, :id, :name, { prompt: "Select a category" }, class: "mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+          <%= f.collection_select :category_id, @categories, :id, :name, { prompt: "Select a category" }, class: "mt-2 block w-full rounded-md border-0 py-1.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
         </div>
 
         <!-- Status -->
         <div class="sm:col-span-3">
           <%= f.label :status, class: "block text-sm font-medium leading-6 text-gray-900" %>
-          <%= f.select :status, SankalpRecord.statuses.keys.map { |s| [s.humanize, s] }, {}, class: "mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+          <%= f.select :status, SankalpRecord.statuses.keys.map { |s| [s.humanize, s] }, {}, class: "mt-2 block w-full rounded-md border-0 py-1.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
         </div>
 
         <!-- Start Date -->
         <div class="sm:col-span-3">
           <%= f.label :start_date, class: "block text-sm font-medium leading-6 text-gray-900" %>
-          <%= f.date_field :start_date, value: sankalp.start_date || Date.current, class: "mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+          <%= f.date_field :start_date, value: sankalp.start_date || Date.current, class: "mt-2 block w-full rounded-md border-0 py-1.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
         </div>
 
         <!-- End Date -->
         <div class="sm:col-span-3">
           <%= f.label :end_date, class: "block text-sm font-medium leading-6 text-gray-900" %>
-          <%= f.date_field :end_date, class: "mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+          <%= f.date_field :end_date, class: "mt-2 block w-full rounded-md border-0 py-1.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
           <p class="mt-2 text-sm text-gray-500">Leave empty for ongoing commitments.</p>
         </div>
       </div>
@@ -66,7 +66,7 @@
 
     <div class="flex items-center justify-end gap-x-4 border-t border-gray-900/10 px-4 py-4 sm:px-8">
       <%= link_to "Cancel", sankalps_path, class: "text-sm font-semibold leading-6 text-gray-900 hover:text-gray-700" %>
-      <%= f.submit sankalp.persisted? ? "Update Sankalp" : "Create Sankalp", class: "rounded-md bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:from-indigo-500 hover:to-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer" %>
+      <%= f.submit sankalp.persisted? ? "Update Sankalp" : "Create Sankalp", class: "rounded-md bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:from-indigo-500 hover:to-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer", data: { turbo_submits_with: "Saving..." } %>
     </div>
   </div>
 <% end %>

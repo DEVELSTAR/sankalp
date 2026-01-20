@@ -26,11 +26,11 @@
     <%= form_with url: sankalps_path, method: :get, class: "flex flex-wrap gap-4 items-end", data: { turbo_frame: "_top" } do |f| %>
       <div class="flex-1 min-w-[150px]">
         <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-        <%= select_tag :status, options_for_select([["All Statuses", ""], ["Active", "active"], ["Completed", "completed"], ["Paused", "paused"]], params[:status]), class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+        <%= select_tag :status, options_for_select([["All Statuses", ""], ["Active", "active"], ["Completed", "completed"], ["Paused", "paused"]], params[:status]), class: "block w-full rounded-md border-gray-300 px-4 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
       </div>
       <div class="flex-1 min-w-[150px]">
         <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-        <%= select_tag :category_id, options_from_collection_for_select(@categories, :id, :name, params[:category_id]), include_blank: "All Categories", class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+        <%= select_tag :category_id, options_from_collection_for_select(@categories, :id, :name, params[:category_id]), include_blank: "All Categories", class: "block w-full rounded-md border-gray-300 px-4 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
       </div>
       <div class="flex gap-2">
         <%= submit_tag "Filter", class: "inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 cursor-pointer" %>

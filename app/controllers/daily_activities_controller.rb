@@ -21,12 +21,19 @@ class DailyActivitiesController < ApplicationController
     authorize @daily_activity
 
     if @daily_activity.save
-      respond_to do |format|
-        format.html { redirect_to @sankalp, notice: "Activity logged successfully." }
-        format.turbo_stream
-      end
+      redirect_to @sankalp, notice: "Activity logged successfully."
     else
-      render :new, status: :unprocessable_entity
+      # Check if validation failed due to existing activity for date
+      existing = @sankalp.daily_activities.find_by(activity_date: @daily_activity.activity_date)
+
+      if existing
+        @daily_activity = existing
+        @daily_activity.assign_attributes(daily_activity_params)
+        flash.now[:notice] = "An activity already exists for this date. You are now updating it."
+        render :edit, status: :unprocessable_entity
+      else
+        render :new, status: :unprocessable_entity
+      end
     end
   end
 
@@ -38,10 +45,7 @@ class DailyActivitiesController < ApplicationController
     authorize @daily_activity
 
     if @daily_activity.update(daily_activity_params)
-      respond_to do |format|
-        format.html { redirect_to @sankalp, notice: "Activity updated successfully." }
-        format.turbo_stream
-      end
+      redirect_to @sankalp, notice: "Activity updated successfully."
     else
       render :edit, status: :unprocessable_entity
     end

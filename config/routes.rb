@@ -18,8 +18,9 @@ Rails.application.routes.draw do
   # Profile
   resource :profile, only: [ :show, :edit, :update ]
 
-  # Categories (read-only for regular users, managed by admin)
-  resources :categories, only: [ :index, :show ]
+  # Categories (User managed)
+  resources :categories
+  resources :rewards, only: [ :show ]
 
   # Sankalps with nested daily activities
   resources :sankalps do

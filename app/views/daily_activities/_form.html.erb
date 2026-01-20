@@ -27,7 +27,7 @@
         <!-- Activity Date -->
         <div>
           <%= f.label :activity_date, class: "block text-sm font-medium leading-6 text-gray-900" %>
-          <%= f.date_field :activity_date, value: daily_activity.activity_date || params[:activity_date] || Date.current, class: "mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+          <%= f.date_field :activity_date, value: daily_activity.activity_date || params[:activity_date] || Date.current, class: "mt-2 block w-full rounded-md border-0 py-1.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
         </div>
 
         <!-- Completed -->
@@ -41,7 +41,7 @@
         <!-- Notes -->
         <div>
           <%= f.label :notes, class: "block text-sm font-medium leading-6 text-gray-900" %>
-          <%= f.text_area :notes, rows: 4, class: "mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "What did you accomplish today? Any reflections?" %>
+          <%= f.text_area :notes, rows: 4, class: "mt-2 block w-full rounded-md border-0 py-1.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "What did you accomplish today? Any reflections?" %>
           <p class="mt-2 text-sm text-gray-500">Optional notes about your progress.</p>
         </div>
       </div>
@@ -49,7 +49,7 @@
 
     <div class="flex items-center justify-end gap-x-4 border-t border-gray-900/10 px-4 py-4 sm:px-8">
       <%= link_to "Cancel", sankalp, class: "text-sm font-semibold leading-6 text-gray-900 hover:text-gray-700" %>
-      <%= f.submit daily_activity.persisted? ? "Update Activity" : "Log Activity", class: "rounded-md bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:from-indigo-500 hover:to-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer" %>
+      <%= f.submit daily_activity.persisted? ? "Update Activity" : "Log Activity", class: "rounded-md bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:from-indigo-500 hover:to-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer", data: { turbo_submits_with: "Saving..." } %>
     </div>
   </div>
 <% end %>

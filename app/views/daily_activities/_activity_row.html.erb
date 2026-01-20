@@ -17,9 +17,9 @@
         <% end %>
       <% end %>
       
-      <div class="min-w-0 flex-1">
+      <%= link_to sankalp_daily_activity_path(sankalp, activity), class: "min-w-0 flex-1 block group/link" do %>
         <div class="flex items-center gap-3">
-          <p class="text-sm font-medium text-gray-900"><%= format_date(activity.activity_date) %></p>
+          <p class="text-sm font-medium text-gray-900 group-hover/link:text-indigo-600 transition-colors"><%= format_date(activity.activity_date) %></p>
           <% if activity.activity_date == Date.current %>
             <span class="inline-flex items-center rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-700">Today</span>
           <% end %>
@@ -27,7 +27,7 @@
         <% if activity.notes.present? %>
           <p class="mt-1 text-sm text-gray-500"><%= activity.notes %></p>
         <% end %>
-      </div>
+      <% end %>
     </div>
     
     <div class="flex items-center gap-2 ml-4">

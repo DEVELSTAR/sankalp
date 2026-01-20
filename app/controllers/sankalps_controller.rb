@@ -9,14 +9,14 @@ class SankalpsController < ApplicationController
     @sankalps = @sankalps.by_status(params[:status]) if params[:status].present?
     @sankalps = @sankalps.by_category(params[:category_id]) if params[:category_id].present?
 
-    @pagy, @sankalps = pagy(@sankalps, limit: 12)
+    @pagy, @sankalps = pagy(@sankalps, items: 12)
     @categories = Category.ordered
   end
 
   def show
     authorize @sankalp
     @daily_activities = @sankalp.daily_activities.order(activity_date: :desc)
-    @pagy, @daily_activities = pagy(@daily_activities, limit: 10)
+    @pagy, @daily_activities = pagy(@daily_activities, items: 10)
   end
 
   def new
@@ -45,7 +45,12 @@ class SankalpsController < ApplicationController
     authorize @sankalp
 
     if @sankalp.update(sankalp_params)
-      redirect_to @sankalp, notice: "Sankalp was successfully updated."
+      notice = if @sankalp.saved_change_to_status? && @sankalp.completed?
+        "Congratulations! You completed this Sankalp! Check your profile for a reward."
+      else
+        "Sankalp was successfully updated."
+      end
+      redirect_to @sankalp, notice: notice
     else
       @categories = Category.ordered
       render :edit, status: :unprocessable_entity

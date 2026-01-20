@@ -6,6 +6,9 @@ class ProfilesController < ApplicationController
     @completed_sankalps_count = @user.sankalps.completed.count
     @total_activities = @user.daily_activities.count
     @completed_activities = @user.daily_activities.completed.count
+    @rewards = @user.rewards.recent
+    # Mark rewards as read when viewing profile
+    current_user.rewards.unread.update_all(read_at: Time.current)
   end
 
   def edit

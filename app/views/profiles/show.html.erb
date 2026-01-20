@@ -54,6 +54,48 @@
     </div>
   </div>
 
+  <!-- My Awards -->
+  <div id="awards" class="bg-white shadow-sm ring-1 ring-gray-900/5 rounded-xl overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+      <h2 class="text-lg font-semibold text-gray-900">My Awards</h2>
+      <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20"><%= @rewards.count %> Awards</span>
+    </div>
+    
+    <% if @rewards.any? %>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-6">
+        <% @rewards.each do |reward| %>
+          <div class="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 hover:border-gray-400">
+            <div class="flex-shrink-0">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-yellow-100">
+                <% if reward.icon == 'trophy' %>
+                  <svg class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0V5.625c0-.621-.503-1.125-1.125-1.125h-3.375c-.621 0-1.125.504-1.125 1.125v7.875m11.386-4.688c.063.296.107.586.106.883 0 2.228-1.724 4.099-3.921 4.365-2.197.266-4.444.695-6.612 1.258.552-2.167.971-4.402 1.238-6.586.27-2.179 2.152-3.886 4.38-3.864.293.003.58.043.874.103l2.935 3.84z" />
+                  </svg>
+                <% else %>
+                   <svg class="h-6 w-6 text-yellow-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                <% end %>
+              </span>
+            </div>
+            <div class="min-w-0 flex-1">
+              <%= link_to "", reward_path(reward), class: "absolute inset-0 focus:outline-none" %>
+              <p class="text-sm font-medium text-gray-900"><%= reward.title %></p>
+              <p class="truncate text-sm text-gray-500"><%= reward.message %></p>
+              <p class="mt-1 text-xs text-gray-400">Awarded on <%= reward.created_at.strftime("%b %d, %Y") %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-12">
+         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+           <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0V5.625c0-.621-.503-1.125-1.125-1.125h-3.375c-.621 0-1.125.504-1.125 1.125v7.875m11.386-4.688c.063.296.107.586.106.883 0 2.228-1.724 4.099-3.921 4.365-2.197.266-4.444.695-6.612 1.258.552-2.167.971-4.402 1.238-6.586.27-2.179 2.152-3.886 4.38-3.864.293.003.58.043.874.103l2.935 3.84z" />
+         </svg>
+         <h3 class="mt-2 text-sm font-semibold text-gray-900">No awards yet</h3>
+         <p class="mt-1 text-sm text-gray-500">Complete sankalps to earn awards!</p>
+      </div>
+    <% end %>
+  </div>
+
   <!-- Account Details -->
   <div class="bg-white shadow-sm ring-1 ring-gray-900/5 rounded-xl overflow-hidden">
     <div class="px-6 py-4 border-b border-gray-100">
