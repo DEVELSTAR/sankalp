@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_21_004000) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_21_162744) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -37,6 +37,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_004000) do
     t.bigint "user_id", null: false
     t.index ["sankalp_id"], name: "index_rewards_on_sankalp_id"
     t.index ["user_id"], name: "index_rewards_on_user_id"
+  end
+
+  create_table "sankalp_assignments", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "sankalp_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["sankalp_id", "user_id"], name: "index_sankalp_assignments_on_sankalp_id_and_user_id", unique: true
+    t.index ["sankalp_id"], name: "index_sankalp_assignments_on_sankalp_id"
+    t.index ["user_id"], name: "index_sankalp_assignments_on_user_id"
   end
 
   create_table "sankalp_categories", force: :cascade do |t|
@@ -86,6 +96,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_004000) do
   add_foreign_key "daily_activities", "sankalps"
   add_foreign_key "rewards", "sankalp_users", column: "user_id"
   add_foreign_key "rewards", "sankalps"
+  add_foreign_key "sankalp_assignments", "sankalp_users", column: "user_id"
+  add_foreign_key "sankalp_assignments", "sankalps"
   add_foreign_key "sankalp_categories", "sankalp_users", column: "user_id"
   add_foreign_key "sankalps", "sankalp_categories", column: "category_id"
   add_foreign_key "sankalps", "sankalp_users", column: "user_id"

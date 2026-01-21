@@ -1,5 +1,8 @@
 class SankalpsController < ApplicationController
+  include CategoriesLoader
+
   before_action :set_sankalp, only: [ :show, :edit, :update, :destroy ]
+  before_action :load_categories, only: [ :index, :new, :create, :edit, :update ]
 
   def index
     @sankalps = policy_scope(SankalpRecord)
@@ -10,7 +13,6 @@ class SankalpsController < ApplicationController
     @sankalps = @sankalps.by_category(params[:category_id]) if params[:category_id].present?
 
     @pagy, @sankalps = pagy(@sankalps, items: 12)
-    @categories = Category.ordered
   end
 
   def show
@@ -21,7 +23,6 @@ class SankalpsController < ApplicationController
 
   def new
     @sankalp = current_user.sankalps.build
-    @categories = Category.ordered
   end
 
   def create
@@ -31,14 +32,12 @@ class SankalpsController < ApplicationController
     if @sankalp.save
       redirect_to @sankalp, notice: "Sankalp was successfully created."
     else
-      @categories = Category.ordered
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
     authorize @sankalp
-    @categories = Category.ordered
   end
 
   def update
@@ -52,7 +51,6 @@ class SankalpsController < ApplicationController
       end
       redirect_to @sankalp, notice: notice
     else
-      @categories = Category.ordered
       render :edit, status: :unprocessable_entity
     end
   end

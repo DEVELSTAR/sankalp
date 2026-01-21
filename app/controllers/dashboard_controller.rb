@@ -1,4 +1,6 @@
 class DashboardController < ApplicationController
+  before_action :redirect_admin_if_needed
+
   def index
     @active_sankalps = current_user.sankalps.active.includes(:category).order(created_at: :desc).limit(5)
     @today_pending = pending_activities_for_today
@@ -13,6 +15,12 @@ class DashboardController < ApplicationController
   end
 
   private
+
+  def redirect_admin_if_needed
+    if current_user&.admin?
+      redirect_to admin_root_path and return
+    end
+  end
 
   def pending_activities_for_today
     current_user.sankalps.active.includes(:category).select do |sankalp|

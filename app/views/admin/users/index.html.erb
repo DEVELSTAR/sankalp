@@ -1,58 +1,117 @@
-<% content_for :title, "Users - Admin" %>
+<% content_for :page_title, "Users" %>
+<% content_for :page_description, "Manage all platform users" %>
 
-<div class="space-y-6">
-  <div class="sm:flex sm:items-center">
-    <div class="sm:flex-auto">
-      <h1 class="text-2xl font-bold text-gray-900">Users</h1>
-      <p class="mt-2 text-sm text-gray-700">All registered users on the platform.</p>
+<!-- Search and Filter Bar -->
+<div class="mb-6 flex items-center justify-between gap-4">
+  <div class="flex-1 max-w-md">
+    <div class="relative">
+      <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+      </svg>
+      <input type="search" placeholder="Search users..." 
+             class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
     </div>
   </div>
-
-  <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
-    <table class="min-w-full divide-y divide-gray-300">
-      <thead class="bg-gray-50">
-        <tr>
-          <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">User</th>
-          <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Role</th>
-          <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Sankalps</th>
-          <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Joined</th>
-          <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-            <span class="sr-only">Actions</span>
-          </th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-200 bg-white">
-        <% @users.each do |user| %>
-          <tr>
-            <td class="whitespace-nowrap py-4 pl-4 pr-3 sm:pl-6">
-              <div class="flex items-center">
-                <div class="h-10 w-10 flex-shrink-0 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm">
-                  <%= user.first_name[0].upcase %><%= user.last_name[0].upcase %>
-                </div>
-                <div class="ml-4">
-                  <div class="font-medium text-gray-900"><%= user.full_name %></div>
-                  <div class="text-gray-500"><%= user.email %></div>
-                </div>
-              </div>
-            </td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-              <%= role_badge(user.role) %>
-            </td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-              <%= user.sankalps.count %>
-            </td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-              <%= user.created_at.strftime("%b %d, %Y") %>
-            </td>
-            <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-              <%= link_to "View", admin_user_path(user), class: "text-indigo-600 hover:text-indigo-900 mr-3" %>
-              <%= link_to "Edit", edit_admin_user_path(user), class: "text-indigo-600 hover:text-indigo-900" %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+  
+  <div class="text-sm text-gray-600 font-medium">
+    <%= @pagy.count %> total users
   </div>
-
-  <%= render "shared/pagination" %>
 </div>
+
+<!-- Users Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <% @users.each do |user| %>
+    <div class="group bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+      <!-- User Header -->
+      <div class="flex items-start justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg shadow-lg">
+            <%= user.first_name[0].upcase %><%= user.last_name[0].upcase %>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900"><%= user.full_name %></h3>
+            <p class="text-xs text-gray-500"><%= user.email %></p>
+          </div>
+        </div>
+        
+        <%= link_to edit_admin_user_path(user), 
+            class: "opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-indigo-600",
+            title: "Edit user" do %>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+          </svg>
+        <% end %>
+      </div>
+
+      <!-- User Details -->
+      <div class="space-y-3">
+        <!-- Role Badge -->
+        <div class="flex items-center gap-2">
+          <span class="px-3 py-1 rounded-full text-xs font-medium <%= user.admin? ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700' %>">
+            <%= user.admin? ? '👑 Admin' : '👤 User' %>
+          </span>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-3 pt-3 border-t border-gray-100">
+          <div class="text-center">
+            <p class="text-lg font-bold text-gray-900"><%= user.sankalps.count %></p>
+            <p class="text-xs text-gray-500">Sankalps</p>
+          </div>
+          <div class="text-center">
+            <p class="text-lg font-bold text-gray-900"><%= user.categories.count %></p>
+            <p class="text-xs text-gray-500">Categories</p>
+          </div>
+          <div class="text-center">
+            <p class="text-lg font-bold text-gray-900"><%= user.rewards.count %></p>
+            <p class="text-xs text-gray-500">Rewards</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2">
+        <%= link_to admin_user_path(user), 
+            class: "flex-1 text-center px-3 py-2 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 rounded-lg text-sm font-medium transition-colors" do %>
+          View Details
+        <% end %>
+        
+        <% unless user == current_user %>
+          <%= button_to admin_user_path(user), 
+              method: :delete, 
+              form: { data: { turbo_confirm: "Delete #{user.full_name}? This will remove all their data." } },
+              class: "px-3 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg text-sm font-medium transition-colors" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<!-- Pagination -->
+<% if @pagy.pages > 1 %>
+  <div class="mt-8 flex items-center justify-center">
+    <nav class="flex items-center gap-2">
+      <% if @pagy.prev %>
+        <%= link_to admin_users_path(page: @pagy.prev), 
+            class: "px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors" do %>
+          ← Previous
+        <% end %>
+      <% end %>
+      
+      <span class="px-4 py-2 text-sm text-gray-600">
+        Page <%= @pagy.page %> of <%= @pagy.pages %>
+      </span>
+      
+      <% if @pagy.next %>
+        <%= link_to admin_users_path(page: @pagy.next), 
+            class: "px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors" do %>
+          Next →
+        <% end %>
+      <% end %>
+    </nav>
+  </div>
+<% end %>

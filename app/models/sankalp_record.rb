@@ -1,4 +1,6 @@
 class SankalpRecord < ApplicationRecord
+  include Orderable
+
   self.table_name = "sankalps"
 
   # Override model name to use 'Sankalp' for routes and params
@@ -11,8 +13,10 @@ class SankalpRecord < ApplicationRecord
   acts_as_paranoid
 
   # Associations
-  belongs_to :user
+  belongs_to :user, optional: true
   belongs_to :category
+  has_many :sankalp_assignments, dependent: :destroy
+  has_many :assigned_users, through: :sankalp_assignments, source: :user
   has_many :daily_activities, foreign_key: :sankalp_id, dependent: :destroy
   has_many :rewards, foreign_key: :sankalp_id, dependent: :nullify
 
@@ -28,13 +32,33 @@ class SankalpRecord < ApplicationRecord
   validate :end_date_after_start_date, if: -> { start_date.present? && end_date.present? }
 
   # Scopes
-  scope :ordered, -> { order(created_at: :desc) }
-  scope :recent, -> { order(updated_at: :desc) }
   scope :by_status, ->(status) { where(status: status) if status.present? }
   scope :by_category, ->(category_id) { where(category_id: category_id) if category_id.present? }
-  scope :for_user, ->(user) { where(user: user) }
+  scope :for_user, ->(user) { includes(:sankalp_assignments).where(sankalp_assignments: { user: user }) }
+  scope :admin_managed, -> { where(user_id: nil) }
 
   # Instance methods
+  def admin_managed?
+    user_id.nil?
+  end
+
+  def assigned_to_user?(user)
+    return false unless user
+    assigned_users.include?(user)
+  end
+
+  def assign_to_users(user_ids)
+    return if user_ids.blank?
+
+    users = User.where(id: user_ids)
+    users.each do |user|
+      sankalp_assignments.find_or_create_by(user: user)
+    end
+
+    # Remove assignments for users not in the list
+    sankalp_assignments.where.not(user_id: user_ids).destroy_all if user_ids.present?
+  end
+
   def completion_percentage
     return 0 if total_days.zero?
     ((completed_days.to_f / total_days) * 100).round(1)

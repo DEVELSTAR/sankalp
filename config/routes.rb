@@ -35,9 +35,7 @@ Rails.application.routes.draw do
   namespace :admin do
     root "dashboard#index"
 
-    resources :dashboard, only: [ :index ]
     resources :users, except: [ :new, :create ]
-    resources :sankalps, except: [ :new, :create ]
     resources :categories
   end
 end

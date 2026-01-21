@@ -2,26 +2,16 @@ module Admin
   class DashboardController < BaseController
     def index
       @total_users = User.count
-      @total_sankalps = SankalpRecord.count
-      @active_sankalps = SankalpRecord.active.count
-      @completed_sankalps = SankalpRecord.completed.count
-      @paused_sankalps = SankalpRecord.paused.count
-      @total_activities = DailyActivity.count
-      @completed_activities = DailyActivity.completed.count
-
+      @total_categories = Category.count
+      
       @recent_users = User.ordered.limit(5)
-      @recent_sankalps = SankalpRecord.includes(:user, :category).order(created_at: :desc).limit(5)
-
-      @category_stats = Category.with_sankalp_count.ordered
-
-      # Statistics for charts
-      @sankalps_by_status = {
-        "Active" => @active_sankalps,
-        "Completed" => @completed_sankalps,
-        "Paused" => @paused_sankalps
-      }
-
-      @activities_this_week = DailyActivity.this_week.group(:activity_date).count
+      @categories = Category.with_sankalp_count.ordered
+      
+      # Current admin user profile data
+      @admin_user = current_user
+      @admin_sankalps = current_user.sankalps.includes(:category).order(created_at: :desc).limit(5)
+      @admin_activities = current_user.daily_activities.includes(sankalp: :category).order(activity_date: :desc).limit(5)
+      @admin_rewards = current_user.rewards.includes(:sankalp).order(created_at: :desc).limit(3)
     end
   end
 end

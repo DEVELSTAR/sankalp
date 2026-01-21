@@ -17,6 +17,7 @@ module Admin
 
     def create
       @category = Category.new(category_params)
+      @category.user = nil  # Admin categories are global
 
       if @category.save
         redirect_to admin_categories_path, notice: "Category was successfully created."
@@ -37,11 +38,19 @@ module Admin
     end
 
     def destroy
-      if @category.destroy
+      sankalps_count = @category.sankalps.count
+
+      if sankalps_count > 0
+        redirect_to admin_categories_path,
+                    alert: "Cannot delete category '#{@category.name}' because it has #{sankalps_count} associated #{'sankalp'.pluralize(sankalps_count)}."
+      elsif @category.destroy
         redirect_to admin_categories_path, notice: "Category was successfully deleted."
       else
         redirect_to admin_categories_path, alert: @category.errors.full_messages.join(", ")
       end
+    rescue ActiveRecord::InvalidForeignKey
+      redirect_to admin_categories_path,
+                  alert: "Cannot delete this category because it has associated records."
     end
 
     private

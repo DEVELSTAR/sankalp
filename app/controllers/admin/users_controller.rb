@@ -9,6 +9,9 @@ module Admin
 
     def show
       @sankalps = @user.sankalps.includes(:category).order(created_at: :desc)
+      @categories = @user.categories.ordered
+      @activities = @user.daily_activities.includes(sankalp: :category).order(activity_date: :desc).limit(10)
+      @rewards = @user.rewards.includes(:sankalp).order(created_at: :desc).limit(5)
       @pagy, @sankalps = pagy(@sankalps, items: 10)
     end
 
@@ -27,9 +30,24 @@ module Admin
       if @user == current_user
         redirect_to admin_users_path, alert: "You cannot delete your own account."
       else
-        @user.destroy
+        # Handle cascading deletes explicitly
+        ActiveRecord::Base.transaction do
+          # Soft delete sankalps (uses paranoia)
+          @user.sankalps.each(&:destroy)
+
+          # Hard delete other associations
+          @user.sankalp_assignments.destroy_all
+          @user.categories.destroy_all
+          @user.rewards.destroy_all
+
+          # Now delete the user
+          @user.destroy
+        end
+
         redirect_to admin_users_path, notice: "User was successfully deleted."
       end
+    rescue ActiveRecord::RecordNotDestroyed, ActiveRecord::InvalidForeignKey => e
+      redirect_to admin_users_path, alert: "Failed to delete user: #{e.message}"
     end
 
     private

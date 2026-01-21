@@ -27,10 +27,6 @@ class UserPolicy < ApplicationPolicy
 
   private
 
-  def admin?
-    user&.admin?
-  end
-
   def owner?
     record == user
   end

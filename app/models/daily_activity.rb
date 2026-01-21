@@ -1,4 +1,6 @@
 class DailyActivity < ApplicationRecord
+  include Orderable
+
   # Associations
   belongs_to :sankalp, class_name: "SankalpRecord", foreign_key: :sankalp_id
   has_one :user, through: :sankalp
@@ -9,7 +11,6 @@ class DailyActivity < ApplicationRecord
   validate :activity_date_within_sankalp_range
 
   # Scopes
-  scope :ordered, -> { order(activity_date: :desc) }
   scope :completed, -> { where(completed: true) }
   scope :pending, -> { where(completed: false) }
   scope :for_date, ->(date) { where(activity_date: date) }

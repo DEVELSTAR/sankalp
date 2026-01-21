@@ -8,7 +8,7 @@ class DailyActivityPolicy < ApplicationPolicy
   end
 
   def create?
-    admin? || sankalp_owner?
+    admin? || owner_of_sankalp?
   end
 
   def update?
@@ -35,15 +35,7 @@ class DailyActivityPolicy < ApplicationPolicy
 
   private
 
-  def admin?
-    user&.admin?
-  end
-
-  def owner?
-    record.sankalp.user == user
-  end
-
-  def sankalp_owner?
+  def owner_of_sankalp?
     record.sankalp.user == user
   end
 end

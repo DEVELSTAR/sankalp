@@ -28,14 +28,4 @@ class SankalpPolicy < ApplicationPolicy
       end
     end
   end
-
-  private
-
-  def admin?
-    user&.admin?
-  end
-
-  def owner?
-    record.user == user
-  end
 end

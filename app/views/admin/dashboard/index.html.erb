@@ -1,128 +1,160 @@
-<% content_for :title, "Admin Dashboard - Sankalp" %>
+<% content_for :page_title, "Dashboard" %>
+<% content_for :page_description, "Overview of your platform" %>
 
-<div class="space-y-6">
-  <div>
-    <h1 class="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-    <p class="mt-1 text-sm text-gray-500">Overview of all Sankalp activities</p>
-  </div>
-
-  <!-- Stats Grid -->
-  <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
-      <dt class="truncate text-sm font-medium text-gray-500">Total Users</dt>
-      <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%= @total_users %></dd>
-    </div>
-    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
-      <dt class="truncate text-sm font-medium text-gray-500">Total Sankalps</dt>
-      <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%= @total_sankalps %></dd>
-    </div>
-    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
-      <dt class="truncate text-sm font-medium text-gray-500">Total Activities</dt>
-      <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%= @total_activities %></dd>
-    </div>
-    <div class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
-      <dt class="truncate text-sm font-medium text-gray-500">Completion Rate</dt>
-      <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-        <%= @total_activities > 0 ? ((@completed_activities.to_f / @total_activities) * 100).round(1) : 0 %>%
-      </dd>
-    </div>
-  </div>
-
-  <!-- Sankalps by Status -->
-  <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-    <div class="overflow-hidden rounded-lg bg-white shadow">
-      <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">Sankalps by Status</h3>
-      </div>
-      <div class="px-4 py-5 sm:p-6">
-        <dl class="grid grid-cols-3 gap-4">
-          <div class="overflow-hidden rounded-lg bg-green-50 px-4 py-5 text-center">
-            <dt class="truncate text-sm font-medium text-green-600">Active</dt>
-            <dd class="mt-1 text-3xl font-semibold tracking-tight text-green-900"><%= @active_sankalps %></dd>
-          </div>
-          <div class="overflow-hidden rounded-lg bg-blue-50 px-4 py-5 text-center">
-            <dt class="truncate text-sm font-medium text-blue-600">Completed</dt>
-            <dd class="mt-1 text-3xl font-semibold tracking-tight text-blue-900"><%= @completed_sankalps %></dd>
-          </div>
-          <div class="overflow-hidden rounded-lg bg-yellow-50 px-4 py-5 text-center">
-            <dt class="truncate text-sm font-medium text-yellow-600">Paused</dt>
-            <dd class="mt-1 text-3xl font-semibold tracking-tight text-yellow-900"><%= @paused_sankalps %></dd>
-          </div>
-        </dl>
-      </div>
-    </div>
-
-    <!-- Category Stats -->
-    <div class="overflow-hidden rounded-lg bg-white shadow">
-      <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">Sankalps by Category</h3>
-      </div>
-      <div class="divide-y divide-gray-200">
-        <% @category_stats.each do |category| %>
-          <div class="px-4 py-4 sm:px-6 flex items-center justify-between">
-            <div class="flex items-center">
-              <span class="inline-block w-3 h-3 rounded-full mr-3" style="background-color: <%= category.color %>"></span>
-              <span class="text-sm font-medium text-gray-900"><%= category.name %></span>
-            </div>
-            <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
-              <%= category.sankalps_count %> Sankalps
-            </span>
-          </div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <!-- Total Users -->
+  <div class="group relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+    <div class="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-white opacity-10"></div>
+    <div class="relative">
+      <div class="flex items-center justify-between mb-2">
+        <svg class="w-10 h-10 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+        </svg>
+        <%= link_to admin_users_path, class: "opacity-0 group-hover:opacity-100 transition-opacity" do %>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
         <% end %>
       </div>
+      <p class="text-3xl font-bold mb-1"><%= @total_users %></p>
+      <p class="text-sm opacity-90">Total Users</p>
     </div>
   </div>
 
-  <!-- Recent Users & Sankalps -->
-  <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-    <!-- Recent Users -->
-    <div class="overflow-hidden rounded-lg bg-white shadow">
-      <div class="px-4 py-5 sm:px-6 border-b border-gray-200 flex items-center justify-between">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">Recent Users</h3>
-        <%= link_to "View all", admin_users_path, class: "text-sm font-medium text-indigo-600 hover:text-indigo-500" %>
+  <!-- Total Categories -->
+  <div class="group relative overflow-hidden bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+    <div class="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-white opacity-10"></div>
+    <div class="relative">
+      <div class="flex items-center justify-between mb-2">
+        <svg class="w-10 h-10 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+        </svg>
+        <%= link_to admin_categories_path, class: "opacity-0 group-hover:opacity-100 transition-opacity" do %>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        <% end %>
       </div>
-      <div class="divide-y divide-gray-200">
+      <p class="text-3xl font-bold mb-1"><%= @total_categories %></p>
+      <p class="text-sm opacity-90">Categories</p>
+    </div>
+  </div>
+
+  <!-- Admin Sankalps -->
+  <div class="group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+    <div class="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-white opacity-10"></div>
+    <div class="relative">
+      <div class="flex items-center justify-between mb-2">
+        <svg class="w-10 h-10 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <%= link_to sankalps_path, class: "opacity-0 group-hover:opacity-100 transition-opacity" do %>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        <% end %>
+      </div>
+      <p class="text-3xl font-bold mb-1"><%= @admin_sankalps.count %></p>
+      <p class="text-sm opacity-90">My Sankalps</p>
+    </div>
+  </div>
+
+  <!-- Admin Rewards -->
+  <div class="group relative overflow-hidden bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+    <div class="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-white opacity-10"></div>
+    <div class="relative">
+      <div class="flex items-center justify-between mb-2">
+        <svg class="w-10 h-10 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+        </svg>
+      </div>
+      <p class="text-3xl font-bold mb-1"><%= @admin_rewards.count %></p>
+      <p class="text-sm opacity-90">Rewards Earned</p>
+    </div>
+  </div>
+</div>
+
+<!-- Two Column Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+  <!-- Recent Users -->
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+      <h3 class="text-lg font-semibold text-gray-900">Recent Users</h3>
+      <%= link_to admin_users_path, class: "text-sm text-indigo-600 hover:text-indigo-700 font-medium" do %>
+        View all →
+      <% end %>
+    </div>
+    
+    <div class="divide-y divide-gray-100">
+      <% if @recent_users.any? %>
         <% @recent_users.each do |user| %>
-          <%= link_to admin_user_path(user), class: "block px-4 py-4 sm:px-6 hover:bg-gray-50" do %>
-            <div class="flex items-center">
-              <div class="h-10 w-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm">
-                <%= user.first_name[0].upcase %><%= user.last_name[0].upcase %>
-              </div>
-              <div class="ml-4">
-                <p class="text-sm font-medium text-gray-900"><%= user.full_name %></p>
-                <p class="text-xs text-gray-500"><%= user.email %></p>
-              </div>
-              <div class="ml-auto">
-                <%= role_badge(user.role) %>
-              </div>
-            </div>
-          <% end %>
-        <% end %>
-      </div>
-    </div>
-
-    <!-- Recent Sankalps -->
-    <div class="overflow-hidden rounded-lg bg-white shadow">
-      <div class="px-4 py-5 sm:px-6 border-b border-gray-200 flex items-center justify-between">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">Recent Sankalps</h3>
-        <%= link_to "View all", admin_sankalps_path, class: "text-sm font-medium text-indigo-600 hover:text-indigo-500" %>
-      </div>
-      <div class="divide-y divide-gray-200">
-        <% @recent_sankalps.each do |sankalp| %>
-          <%= link_to admin_sankalp_path(sankalp), class: "block px-4 py-4 sm:px-6 hover:bg-gray-50" do %>
+          <div class="px-6 py-4 hover:bg-gray-50 transition-colors">
             <div class="flex items-center justify-between">
-              <div class="min-w-0 flex-1">
-                <div class="flex items-center">
-                  <span class="inline-block w-3 h-3 rounded-full mr-2" style="background-color: <%= sankalp.category.color %>"></span>
-                  <p class="text-sm font-medium text-gray-900 truncate"><%= sankalp.title %></p>
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-semibold">
+                  <%= user.first_name[0].upcase %>
                 </div>
-                <p class="text-xs text-gray-500 mt-1">by <%= sankalp.user.full_name %></p>
+                <div>
+                  <p class="font-medium text-gray-900"><%= user.full_name %></p>
+                  <p class="text-sm text-gray-500"><%= user.email %></p>
+                </div>
               </div>
-              <%= status_badge(sankalp.status) %>
+              <span class="px-3 py-1 rounded-full text-xs font-medium <%= user.admin? ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-700' %>">
+                <%= user.role.humanize %>
+              </span>
             </div>
-          <% end %>
+          </div>
         <% end %>
-      </div>
+      <% else %>
+        <div class="px-6 py-12 text-center text-gray-500">
+          <p class="text-sm">No users yet</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Categories Overview -->
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+      <h3 class="text-lg font-semibold text-gray-900">Categories</h3>
+      <%= link_to admin_categories_path, class: "text-sm text-indigo-600 hover:text-indigo-700 font-medium" do %>
+        Manage →
+      <% end %>
+    </div>
+    
+    <div class="p-6 space-y-3">
+      <% if @categories.any? %>
+        <% @categories.limit(6).each do |category| %>
+          <div class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition-colors">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg flex items-center justify-center text-xl" style="background-color: <%= category.color %>20;">
+                <% icon = category.icon.to_s.strip %>
+                <% # Only show icon if it's 1-2 characters (likely emoji), otherwise show initial %>
+                <% if icon.present? && icon.length <= 2 %>
+                  <%= icon %>
+                <% else %>
+                  <span class="text-xs font-bold" style="color: <%= category.color %>;">
+                    <%= category.name[0].upcase %>
+                  </span>
+                <% end %>
+              </div>
+              <div>
+                <p class="font-medium text-gray-900"><%= category.name %></p>
+                <% if category.respond_to?(:sankalps_count) %>
+                  <p class="text-xs text-gray-500"><%= category.sankalps_count %> sankalps</p>
+                <% end %>
+              </div>
+            </div>
+            <div class="w-2 h-2 rounded-full" style="background-color: <%= category.color %>;"></div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="py-12 text-center text-gray-500">
+          <p class="text-sm">No categories yet</p>
+          <%= link_to "Create First Category", new_admin_category_path, class: "mt-2 inline-block text-sm text-indigo-600 hover:text-indigo-700 font-medium" %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

@@ -1,57 +1,99 @@
-<% content_for :title, "Categories - Admin" %>
+<% content_for :page_title, "Categories" %>
+<% content_for :page_description, "Manage global categories for all users" %>
 
-<div class="space-y-6">
-  <div class="sm:flex sm:items-center">
-    <div class="sm:flex-auto">
-      <h1 class="text-2xl font-bold text-gray-900">Categories</h1>
-      <p class="mt-2 text-sm text-gray-700">Manage Sankalp categories.</p>
-    </div>
-    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-      <%= link_to new_admin_category_path, class: "inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" do %>
-        <svg class="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-        </svg>
-        Add Category
-      <% end %>
-    </div>
-  </div>
-
-  <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
-    <table class="min-w-full divide-y divide-gray-300">
-      <thead class="bg-gray-50">
-        <tr>
-          <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Category</th>
-          <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Description</th>
-          <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Sankalps</th>
-          <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-            <span class="sr-only">Actions</span>
-          </th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-gray-200 bg-white">
-        <% @categories.each do |category| %>
-          <tr>
-            <td class="whitespace-nowrap py-4 pl-4 pr-3 sm:pl-6">
-              <div class="flex items-center">
-                <span class="inline-block w-4 h-4 rounded-full mr-3" style="background-color: <%= category.color %>"></span>
-                <span class="font-medium text-gray-900"><%= category.name %></span>
-              </div>
-            </td>
-            <td class="px-3 py-4 text-sm text-gray-500 max-w-xs truncate">
-              <%= category.description.presence || "-" %>
-            </td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-              <%= category.sankalps_count %>
-            </td>
-            <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-              <%= link_to "Edit", edit_admin_category_path(category), class: "text-indigo-600 hover:text-indigo-900 mr-3" %>
-              <%= button_to admin_category_path(category), method: :delete, class: "text-red-600 hover:text-red-900", form: { class: "inline" }, data: { turbo_confirm: "Are you sure? All Sankalps in this category will be affected." } do %>
-                Delete
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
+<!-- Header Actions -->
+<div class="mb-6 flex items-center justify-between">
+  <div></div>
+  <%= link_to new_admin_category_path, 
+      class: "inline-flex items-center gap-2 px-4 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors text-sm font-medium shadow-sm" do %>
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+    </svg>
+    New Category
+  <% end %>
 </div>
+
+<!-- Categories Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <% @categories.each do |category| %>
+    <div class="group bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+      <!-- Color Accent -->
+      <div class="absolute top-0 left-0 right-0 h-1" style="background-color: <%= category.color %>;"></div>
+      
+      <!-- Category Header -->
+      <div class="flex items-start justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shadow-sm" 
+               style="background-color: <%= category.color %>20;">
+            <% icon = category.icon.to_s.strip %>
+            <% # Only show icon if it's 1-2 characters (likely emoji), otherwise show initial %>
+            <% if icon.present? && icon.length <= 2 %>
+              <%= icon %>
+            <% else %>
+              <span class="text-lg font-bold" style="color: <%= category.color %>;">
+                <%= category.name[0].upcase %>
+              </span>
+            <% end %>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900 text-lg"><%= category.name %></h3>
+            <% if category.respond_to?(:sankalps_count) %>
+              <p class="text-xs text-gray-500 mt-1">
+                <%= category.sankalps_count %> <%= 'sankalp'.pluralize(category.sankalps_count) %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+        
+        <!-- Actions Dropdown -->
+        <div class="opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+          <%= link_to edit_admin_category_path(category), 
+              class: "text-gray-400 hover:text-indigo-600 transition-colors",
+              title: "Edit" do %>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+            </svg>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <% if category.description.present? %>
+        <p class="text-sm text-gray-600 mb-4 line-clamp-2"><%= category.description %></p>
+      <% else %>
+        <p class="text-sm text-gray-400 italic mb-4">No description</p>
+      <% end %>
+
+      <!-- Color Preview -->
+      <div class="flex items-center gap-2 pt-3 border-t border-gray-100">
+        <div class="w-6 h-6 rounded-lg shadow-sm" style="background-color: <%= category.color %>;"></div>
+        <span class="text-xs font-mono text-gray-500"><%= category.color %></span>
+      </div>
+
+      <!-- Delete Button -->
+      <div class="mt-4 pt-4 border-t border-gray-100">
+        <%= button_to admin_category_path(category), 
+            method: :delete,
+            form: { data: { turbo_confirm: "Delete #{category.name}? This action cannot be undone." } },
+            class: "w-full px-3 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2" do %>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+          </svg>
+          Delete
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<% if @categories.empty? %>
+  <div class="text-center py-16">
+    <div class="w-20 h-20 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center text-4xl">
+      🏷️
+    </div>
+    <h3 class="text-lg font-semibold text-gray-900 mb-2">No categories yet</h3>
+    <p class="text-gray-500 text-sm mb-6">Create your first category to get started</p>
+    <%= link_to "Create Category", new_admin_category_path, 
+        class: "inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors font-medium" %>
+  </div>
+<% end %>

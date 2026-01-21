@@ -50,4 +50,25 @@ class ApplicationPolicy
 
     attr_reader :user, :scope
   end
+
+  private
+
+  # Shared helper methods for all policies
+  def admin?
+    user&.admin?
+  end
+
+  def owner?
+    return false unless user && record
+
+    # Handle direct user_id column
+    if record.respond_to?(:user_id)
+      record.user_id == user.id
+    # Handle user association
+    elsif record.respond_to?(:user)
+      record.user == user
+    else
+      false
+    end
+  end
 end

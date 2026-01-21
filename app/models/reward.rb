@@ -1,4 +1,6 @@
 class Reward < ApplicationRecord
+  include Orderable
+
   belongs_to :user
   belongs_to :sankalp, class_name: "SankalpRecord", optional: true
 
@@ -6,7 +8,6 @@ class Reward < ApplicationRecord
   validates :message, presence: true
 
   scope :unread, -> { where(read_at: nil) }
-  scope :recent, -> { order(created_at: :desc) }
 
   def mark_as_read!
     update(read_at: Time.current)
